@@ -2,13 +2,8 @@
 
 const states = ['Idea', 'Pendiente', 'Listo', 'Publicada'];
 const recordingLabel = 'Recolección de contenido';
-const storageKey = 'tablero-empresas-v1';
-const initial = {
-  active: 'fresh',
-  companies: [{ id: 'fresh', name: 'Mi empresa' }],
-  groups: [],
-  tasks: []
-};
+const storageKey = 'tablework-published-nnyHnMdHFoyTQ1C05y2+lpoYDzyzu1ft7L2JHoAzgZg=';
+const initial = {"active":"fresh","companies":[{"id":"fresh","name":"Stay Fresh Malta"},{"id":"estanco","name":"El Estanco"}],"groups":[{"id":"fresh-grabacion-2026-11","title":"Recolección de contenido","company":"fresh"}],"tasks":[{"id":"fresh-piece-0","title":"Services","company":"fresh","date":"","status":"Pendiente","archived":false},{"id":"fresh-piece-1","title":"How It Works","company":"fresh","date":"","status":"Pendiente","archived":false},{"id":"fresh-piece-2","title":"Tracking","company":"fresh","date":"","status":"Pendiente","archived":false},{"id":"fresh-piece-3","title":"FAQs","company":"fresh","date":"","status":"Pendiente","archived":false},{"id":"fresh-piece-4","title":"For Business","company":"fresh","date":"","status":"Idea","archived":false},{"id":"fresh-piece-5","title":"Ropa de cama y toallas","company":"fresh","date":"","status":"Pendiente","archived":false},{"id":"fresh-piece-6","title":"Recolección y entrega","company":"fresh","date":"","status":"Pendiente","archived":false},{"id":"fresh-piece-7","title":"Seguimiento de pedidos","company":"fresh","date":"","status":"Pendiente","archived":false},{"id":"fresh-piece-8","title":"Otros textiles","company":"fresh","date":"","status":"Pendiente","archived":false},{"id":"fresh-piece-9","title":"Control de manchas","company":"fresh","date":"","status":"Pendiente","archived":false},{"id":"fresh-recording-0","title":"Grabar: Recolección y entrega","company":"fresh","groupId":"fresh-grabacion-2026-11","date":"2026-11-30","status":"Pendiente","archived":false},{"id":"fresh-recording-1","title":"Grabar: Carga de máquinas","company":"fresh","groupId":"fresh-grabacion-2026-11","date":"2026-11-30","status":"Pendiente","archived":false},{"id":"fresh-recording-2","title":"Grabar: Doblado","company":"fresh","groupId":"fresh-grabacion-2026-11","date":"2026-11-30","status":"Pendiente","archived":false},{"id":"fresh-recording-3","title":"Grabar: Empaques","company":"fresh","groupId":"fresh-grabacion-2026-11","date":"2026-11-30","status":"Pendiente","archived":false},{"id":"fresh-recording-4","title":"Grabar: Transporte","company":"fresh","groupId":"fresh-grabacion-2026-11","date":"2026-11-30","status":"Pendiente","archived":false},{"id":"fresh-recording-5","title":"Grabar: Etiquetado","company":"fresh","groupId":"fresh-grabacion-2026-11","date":"2026-11-30","status":"Pendiente","archived":false},{"id":"fresh-recording-6","title":"Grabar: Control de manchas","company":"fresh","groupId":"fresh-grabacion-2026-11","date":"2026-11-30","status":"Pendiente","archived":false},{"id":"fresh-recording-7","title":"Grabar: Pedidos","company":"fresh","groupId":"fresh-grabacion-2026-11","date":"2026-11-30","status":"Pendiente","archived":false},{"id":"fresh-recording-8","title":"Grabar: Tracking app","company":"fresh","groupId":"fresh-grabacion-2026-11","date":"2026-11-30","status":"Pendiente","archived":false},{"id":"estanco-story-1","title":"Preparar encuesta para el miércoles de vagabundina","company":"estanco","date":"","status":"Pendiente","archived":false},{"id":"estanco-carousel-1","title":"Revisar el carrusel ¿Y hoy qué hacemos?","company":"estanco","date":"","status":"Pendiente","archived":false}],"stayFreshAndEstancoImported":true,"recordingGroupScheduled":true};
 const $ = (selector) => document.querySelector(selector);
 const feedback = $('#feedback');
 const statusFilters = $('#status-filters');
@@ -123,7 +118,7 @@ function normalizeBoard(board) {
 async function start() {
   try {
     let persisted = null;
-    if (location.protocol !== 'file:') {
+    if (false) {
       const response = await fetch('/api/board').catch(() => null);
       if (response?.ok && response.headers.get('content-type')?.includes('application/json')) {
         const result = await response.json();
