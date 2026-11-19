@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7f8f5">
+<title>Tablero de trabajo</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+<aside>
+  <div class="brand"><span class="logo" aria-hidden="true">▦</span> Tablero de trabajo</div>
+  <nav aria-label="Empresas">
+    <h2>Empresas</h2>
+    <div id="companies"></div>
+    <button id="add-company" class="add">+ Añadir empresa</button>
+  </nav>
+  <div class="storage"><p id="storage-mode"></p><button id="export-board" type="button">Exportar datos</button><button id="import-board" type="button" hidden>Importar respaldo</button><input type="file" id="backup-file" accept=".json,application/json" hidden></div>
+</aside>
+<main>
+  <header>
+    <div><p class="eyebrow" id="category">Seguimiento</p><h1 id="heading"></h1><p class="subtitle">Organiza tus tareas y consulta el avance por estado.</p></div>
+    <button class="primary" id="new-task">+ Nueva tarea</button>
+  </header>
+  <section class="panel calendar-panel" aria-labelledby="calendar-title">
+    <div class="toolbar">
+      <h2 id="calendar-title">Calendario de Marketing</h2>
+      <div class="calendar-actions">
+        <button type="button" id="toggle-task-table" aria-controls="task-table-panel" aria-expanded="false">Vista de tabla</button>
+        <button class="primary" id="new-group">+ Nuevo grupo</button>
+      </div>
+    </div>
+    <div class="calendar-group-controls">
+      <div class="group-filter-options" role="group" aria-label="Filtrar por grupo">
+        <button type="button" id="all-groups" class="group-filter-all" aria-pressed="true">Todos</button>
+        <div id="group-filter"></div>
+      </div>
+      <button type="button" id="open-selected-group" hidden>Ver grupo</button>
+    </div>
+    <div class="calendar-nav">
+      <div class="calendar-month-controls">
+        <button id="previous-month" aria-label="Mes anterior">&lsaquo;</button>
+        <h3 id="month-label" aria-live="polite"></h3>
+        <button id="next-month" aria-label="Mes siguiente">&rsaquo;</button>
+        <button id="current-month">Hoy</button>
+      </div>
+      <div id="status-filters" role="group" aria-label="Filtrar por estado"></div>
+    </div>
+    <div class="table-wrap"><table class="calendar" aria-labelledby="month-label">
+      <thead><tr><th scope="col">Lun</th><th scope="col">Mar</th><th scope="col">Mi&eacute;</th><th scope="col">Jue</th><th scope="col">Vie</th><th scope="col">S&aacute;b</th><th scope="col">Dom</th></tr></thead>
+      <tbody id="calendar-days"></tbody>
+    </table></div>
+    <div id="calendar-agenda"></div>
+  </section>
+  <section class="panel" id="task-table-panel" aria-labelledby="tasks-title" hidden>
+    <div class="toolbar">
+      <h2 id="tasks-title">Tareas</h2>
+      <input id="query" type="search" placeholder="Buscar tarea…" aria-label="Buscar tarea">
+    </div>
+    <div class="table-wrap"><table><thead><tr><th>Tarea</th><th>Grupo</th><th>Estado</th><th>Responsable</th><th>Fecha límite</th><th><span class="sr">Acciones</span></th></tr></thead><tbody id="rows"></tbody></table></div>
+    <p id="empty" class="empty" hidden></p>
+    <p id="count" class="count" aria-live="polite"></p>
+  </section>
+  <p id="feedback" role="status"></p>
+</main>
+<dialog id="task-dialog" aria-labelledby="task-title">
+  <form id="task-form">
+    <h2 id="task-title">Nueva tarea</h2>
+    <label>Grupo<select name="groupId" aria-controls="inline-group"></select></label>
+    <fieldset id="inline-group" hidden>
+      <legend>Nuevo grupo</legend>
+      <label>Nombre<input id="inline-group-name" maxlength="120"></label>
+      <p id="inline-group-error" class="form-error" role="alert"></p>
+      <div class="actions">
+        <button type="button" id="cancel-inline-group">Cancelar grupo</button>
+        <button type="button" id="save-inline-group">Crear grupo</button>
+      </div>
+    </fieldset>
+    <label>Tarea<input name="title" required maxlength="120"></label>
+    <div class="form-grid">
+      <label>Estado<select name="status"></select></label>
+      <label>Fecha límite<input name="date" type="date"></label>
+      <label>Responsable<input name="owner" maxlength="80"></label>
+      <label>Canal o formato<input name="channel" placeholder="Ej. Instagram · Reel" maxlength="80"></label>
+    </div>
+    <label>Notas<textarea name="notes" rows="4" maxlength="2000" placeholder="Material pendiente, aprobación o próximo paso"></textarea></label>
+    <p class="form-error" role="alert"></p>
+    <div class="actions">
+      <button type="button" id="archive" class="danger" hidden></button>
+      <button type="button" data-close>Cancelar</button>
+      <button class="primary">Guardar tarea</button>
+    </div>
+  </form>
+</dialog>
+<dialog id="company-dialog" aria-labelledby="company-title">
+  <form id="company-form">
+    <h2 id="company-title">Añadir empresa</h2>
+    <label>Nombre<input name="name" maxlength="50" required></label>
+    <p class="form-error" role="alert"></p>
+    <div class="actions"><button type="button" data-close>Cancelar</button><button class="primary">Guardar empresa</button></div>
+  </form>
+</dialog>
+<dialog id="group-dialog" aria-labelledby="group-title">
+  <form id="group-form">
+    <h2 id="group-title">Nuevo grupo</h2>
+    <label>Nombre<input name="title" maxlength="120" required></label>
+    <label>Descripci&oacute;n<textarea name="description" rows="3" maxlength="2000"></textarea></label>
+    <p class="form-error" role="alert"></p>
+    <div class="actions"><button type="button" data-close>Cancelar</button><button class="primary">Guardar grupo</button></div>
+  </form>
+</dialog>
+<dialog id="group-details" aria-labelledby="group-detail-title">
+  <h2 id="group-detail-title"></h2>
+  <p id="group-detail-description" hidden></p>
+  <ul id="group-detail-tasks"></ul>
+  <div class="actions">
+    <button type="button" data-close>Cerrar</button>
+    <button type="button" id="edit-group">Editar grupo</button>
+    <button type="button" id="show-group-tasks">Ver tareas</button>
+    <button type="button" id="add-group-task" class="primary">+ Agregar tarea</button>
+  </div>
+</dialog>
+</body>
+</html>
